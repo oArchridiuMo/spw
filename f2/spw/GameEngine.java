@@ -6,7 +6,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Iterator; 
+//import javax.swing.JOptionPane; 
 
 import javax.swing.Timer;
 
@@ -21,8 +22,10 @@ public class GameEngine implements KeyListener, GameReporter{
 	
 	private long score = 0;
 	private double difficulty = 0.1;
-	
-	public GameEngine(GamePanel gp, SpaceShip v) {
+	//public String name;
+
+
+		public GameEngine(GamePanel gp, SpaceShip v) {
 		this.gp = gp;
 		this.v = v;		
 		
@@ -87,11 +90,9 @@ public class GameEngine implements KeyListener, GameReporter{
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
 			v.move(-1);
-			score -= 500;
 			break;
 		case KeyEvent.VK_RIGHT:
 			v.move(1);
-			score -= 500;
 			break;
 		case KeyEvent.VK_D:
 			difficulty += 0.1;
@@ -102,6 +103,8 @@ public class GameEngine implements KeyListener, GameReporter{
 	public long getScore(){
 		return score;
 	}
+
+
 	
 	@Override
 	public void keyPressed(KeyEvent e) {

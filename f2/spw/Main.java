@@ -3,9 +3,14 @@ package f2.spw;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane; 
+
 
 public class Main {
 	public static void main(String[] args){
+		String name;
+		name = JOptionPane.showInputDialog("Enter your name: ");
+		
 		JFrame frame = new JFrame("Space War");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(400, 650);

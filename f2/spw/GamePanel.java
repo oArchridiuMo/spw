@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+    
 
 import javax.swing.JPanel;
 
@@ -14,6 +15,8 @@ public class GamePanel extends JPanel {
 	Graphics2D big;
 	ArrayList<Sprite> sprites = new ArrayList<Sprite>();
 
+
+	
 	public GamePanel() {
 		bi = new BufferedImage(400, 600, BufferedImage.TYPE_INT_ARGB);
 		big = (Graphics2D) bi.getGraphics();
