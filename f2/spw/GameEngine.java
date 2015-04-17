@@ -7,7 +7,6 @@ import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator; 
-//import javax.swing.JOptionPane; 
 
 import javax.swing.Timer;
 
@@ -22,7 +21,9 @@ public class GameEngine implements KeyListener, GameReporter{
 	
 	private long score = 0;
 	private double difficulty = 0.1;
-	//public String name;
+	public long live = 6; //multiple by 2
+	public String name;
+
 
 
 		public GameEngine(GamePanel gp, SpaceShip v) {
@@ -42,8 +43,9 @@ public class GameEngine implements KeyListener, GameReporter{
 		
 	}
 	
-	public void start(){
+	public void start(String name){
 		timer.start();
+		this.name = name;
 	}
 	
 	private void generateEnemy(){
@@ -67,6 +69,8 @@ public class GameEngine implements KeyListener, GameReporter{
 				gp.sprites.remove(e);
 				score += 100;
 			}
+
+			difficulty = 0.1+(float)((score-10000)/100000);
 		}
 		
 		gp.updateGameUI(this);
@@ -83,7 +87,10 @@ public class GameEngine implements KeyListener, GameReporter{
 	}
 	
 	public void die(){
-		timer.stop();
+		if(live > 0)
+			live--;			
+		else
+		    timer.stop();
 	}
 	
 	void controlVehicle(KeyEvent e) {
@@ -104,6 +111,13 @@ public class GameEngine implements KeyListener, GameReporter{
 		return score;
 	}
 
+	public String getName(){
+		return name;
+	}
+
+	public long getLive(){
+		return live;
+	}
 
 	
 	@Override

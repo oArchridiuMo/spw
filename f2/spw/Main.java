@@ -10,6 +10,7 @@ public class Main {
 	public static void main(String[] args){
 		String name;
 		name = JOptionPane.showInputDialog("Enter your name: ");
+
 		
 		JFrame frame = new JFrame("Space War");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,6 +24,6 @@ public class Main {
 		frame.getContentPane().add(gp, BorderLayout.CENTER);
 		frame.setVisible(true);
 		
-		engine.start();
+		engine.start(name);
 	}
 }
