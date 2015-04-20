@@ -8,6 +8,8 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator; 
 
+import javax.swing.JOptionPane; 
+
 import javax.swing.Timer;
 
 
@@ -21,7 +23,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	
 	private long score = 0;
 	private double difficulty = 0.1;
-	public long live = 6; //multiple by 2
+	public long live = 4; //multiple by 2
 	public String name;
 
 
@@ -87,10 +89,21 @@ public class GameEngine implements KeyListener, GameReporter{
 	}
 	
 	public void die(){
-		if(live > 0)
-			live--;			
-		else
-		    timer.stop();
+		if(live > 0){
+			live--;	
+			if(live%2==0){
+				try{
+					Thread.sleep(1000);
+				}catch(Exception e){
+					System.out.println("Oh.");
+				}
+				score -= 100;
+			}	
+		}
+		else{
+		   	timer.stop();
+		   	JOptionPane.showMessageDialog(null, "Score : " + score, "Game Over!",JOptionPane.INFORMATION_MESSAGE );
+		}
 	}
 	
 	void controlVehicle(KeyEvent e) {
@@ -101,8 +114,11 @@ public class GameEngine implements KeyListener, GameReporter{
 		case KeyEvent.VK_RIGHT:
 			v.move(1);
 			break;
-		case KeyEvent.VK_D:
-			difficulty += 0.1;
+		case KeyEvent.VK_UP:
+			v.straight(-1);
+			break;
+		case KeyEvent.VK_DOWN:
+			v.straight(1);
 			break;
 		}
 	}
