@@ -3,13 +3,12 @@ package f2.spw;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane; 
+import javax.swing.JOptionPane;
 
 
 public class Main {
 	public static void main(String[] args){
 		String name;
-		long score;
 		name = JOptionPane.showInputDialog("Enter your name: ");
 
 		
@@ -26,5 +25,7 @@ public class Main {
 		frame.setVisible(true);
 		
 		engine.start(name);
+
+
 	}
 }

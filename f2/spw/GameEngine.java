@@ -22,9 +22,11 @@ public class GameEngine implements KeyListener, GameReporter{
 	private Timer timer;
 	
 	private long score = 0;
+	private long highScore = 0;
 	private double difficulty = 0.1;
 	public long live = 4; //multiple by 2
 	public String name;
+	public String noname = "Noname";
 
 
 
@@ -72,7 +74,6 @@ public class GameEngine implements KeyListener, GameReporter{
 				score += 100;
 			}
 
-			difficulty = 0.1+(float)((score-10000)/100000);
 		}
 		
 		gp.updateGameUI(this);
@@ -120,6 +121,9 @@ public class GameEngine implements KeyListener, GameReporter{
 		case KeyEvent.VK_DOWN:
 			v.straight(1);
 			break;
+		case KeyEvent.VK_N:
+			newGame();
+			break;
 		}
 	}
 
@@ -133,6 +137,18 @@ public class GameEngine implements KeyListener, GameReporter{
 
 	public long getLive(){
 		return live;
+	}
+
+	public long getHighScore(){
+		return highScore;
+	}
+
+	public void newGame(){
+		if(score > highScore)
+			highScore = score;
+		score = 0;
+		live = 5;
+		start(name);
 	}
 
 	

@@ -5,4 +5,5 @@ public interface GameReporter {
 	long getScore();
 	String getName();
 	long getLive();
+	long getHighScore();
 }
