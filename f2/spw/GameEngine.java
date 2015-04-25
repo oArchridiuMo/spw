@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 
+
 public class GameEngine implements KeyListener, GameReporter{
 	GamePanel gp;
 		
@@ -72,6 +73,8 @@ public class GameEngine implements KeyListener, GameReporter{
 				e_iter.remove();
 				gp.sprites.remove(e);
 				score += 100;
+				if(score > highScore)
+					highScore = score;
 			}
 
 		}
