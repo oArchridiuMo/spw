@@ -28,6 +28,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	public long live = 4; //multiple by 2
 	public String name;
 	public String noname = "Noname";
+	private int stepEnermy = 12;
 
 
 
@@ -67,7 +68,7 @@ public class GameEngine implements KeyListener, GameReporter{
 		Iterator<Enemy> e_iter = enemies.iterator();
 		while(e_iter.hasNext()){
 			Enemy e = e_iter.next();
-			e.proceed();
+			e.proceed(stepEnermy);
 			
 			if(!e.isAlive()){
 				e_iter.remove();
@@ -126,6 +127,26 @@ public class GameEngine implements KeyListener, GameReporter{
 			break;
 		case KeyEvent.VK_N:
 			newGame();
+			break;
+		case KeyEvent.VK_F1:
+			stepEnermy++;
+			break;
+		case KeyEvent.VK_F2:
+			stepEnermy--;
+			break;
+		case KeyEvent.VK_1:
+			difficulty += 0.05;
+			break;
+		case KeyEvent.VK_2:
+			difficulty -= 0.05;
+			break;
+		case KeyEvent.VK_P:
+			if(timer.isRunning()){
+				timer.stop();
+				JOptionPane.showMessageDialog(null, "                      Pause!!!\nArrow sign : Control the Spaceship.\nF1         : Enermy Speed Up.\nF2         : Enermy Speed Down.\nNumber  1  : Difficulity Up.\nNumber  2  : Difficulity Down.\nPress N    : New Game.\nPress P    : Continue game.", "***Pause***",JOptionPane.INFORMATION_MESSAGE );
+				}
+			else
+				timer.start();
 			break;
 		}
 	}

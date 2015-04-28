@@ -10,6 +10,7 @@ public class Main {
 	public static void main(String[] args){
 		String name;
 		name = JOptionPane.showInputDialog("Enter your name: ");
+		JOptionPane.showMessageDialog(null, "Arrow sign : Control the Spaceship.\nF1         : Enermy Speed Up.\nF2         : Enermy Speed Down.\nNumber  1  : Difficulity Up.\nNumber  2  : Difficulity Down.\nPress N    : New Game.\nPress P    : Pause.", "How to play?",JOptionPane.INFORMATION_MESSAGE );
 
 		
 		JFrame frame = new JFrame("Space War");

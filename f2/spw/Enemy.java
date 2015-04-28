@@ -8,7 +8,6 @@ public class Enemy extends Sprite{
 	public static final int Y_TO_FADE = 400;
 	public static final int Y_TO_DIE = 600;
 	
-	private int step = 12;
 	private boolean alive = true;
 	
 	public Enemy(int x, int y) {
@@ -29,7 +28,7 @@ public class Enemy extends Sprite{
 		
 	}
 
-	public void proceed(){
+	public void proceed(int step){
 		y += step;
 		if(y > Y_TO_DIE){
 			alive = false;
@@ -39,4 +38,5 @@ public class Enemy extends Sprite{
 	public boolean isAlive(){
 		return alive;
 	}
+
 }
