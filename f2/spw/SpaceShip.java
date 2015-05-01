@@ -35,4 +35,12 @@ public class SpaceShip extends Sprite{
 			y = 600 - height;
 	}
 
+	public int getX(){
+		return x;
+	}
+
+	public int getY(){
+		return y;
+	}
+
 }

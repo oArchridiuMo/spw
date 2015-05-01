@@ -17,7 +17,8 @@ import javax.swing.Timer;
 public class GameEngine implements KeyListener, GameReporter{
 	GamePanel gp;
 		
-	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();	
+	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();	
 	private SpaceShip v;	
 	
 	private Timer timer;
@@ -29,6 +30,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	public String name;
 	public String noname = "Noname";
 	private int stepEnermy = 12;
+	private int stepShot = 25;
 
 
 
@@ -58,6 +60,12 @@ public class GameEngine implements KeyListener, GameReporter{
 		Enemy e = new Enemy((int)(Math.random()*390), 30);
 		gp.sprites.add(e);
 		enemies.add(e);
+	}
+
+	private void shoot(){
+		Bullet b = new Bullet(v.getX(),v.getY());
+		gp.sprites.add(b);
+		bullets.add(b);
 	}
 	
 	private void process(){
@@ -127,6 +135,9 @@ public class GameEngine implements KeyListener, GameReporter{
 			break;
 		case KeyEvent.VK_N:
 			newGame();
+			break;
+		case KeyEvent.VK_S:
+			shoot();
 			break;
 		case KeyEvent.VK_F1:
 			stepEnermy++;
