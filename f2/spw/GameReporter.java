@@ -6,4 +6,6 @@ public interface GameReporter {
 	String getName();
 	long getLive();
 	long getHighScore();
+	long getLevel();
+	double getPercent();
 }

@@ -17,14 +17,15 @@ import javax.swing.Timer;
 public class GameEngine implements KeyListener, GameReporter{
 	GamePanel gp;
 		
-	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();	
+	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();	
 	private SpaceShip v;	
 	
 	private Timer timer;
 	
 	private long score = 0;
 	private long highScore = 0;
+	private long lowwerScore = 0;
+	private long limitLevel = 5000; 
 	private double difficulty = 0.1;
 	public long live = 4; //multiple by 2
 	public String name;
@@ -62,11 +63,6 @@ public class GameEngine implements KeyListener, GameReporter{
 		enemies.add(e);
 	}
 
-	private void shoot(){
-		Bullet b = new Bullet(v.getX(),v.getY());
-		gp.sprites.add(b);
-		bullets.add(b);
-	}
 	
 	private void process(){
 		if(Math.random() < difficulty){
@@ -84,6 +80,12 @@ public class GameEngine implements KeyListener, GameReporter{
 				score += 100;
 				if(score > highScore)
 					highScore = score;
+				if(score>limitLevel){
+					difficulty += 0.1;
+					lowwerScore = limitLevel;
+					limitLevel = (long)(limitLevel*2.5);
+					System.out.println(difficulty);
+				}
 			}
 
 		}
@@ -115,7 +117,7 @@ public class GameEngine implements KeyListener, GameReporter{
 		}
 		else{
 		   	timer.stop();
-		   	JOptionPane.showMessageDialog(null, "Score : " + score, "Game Over!",JOptionPane.INFORMATION_MESSAGE );
+		   	gp.gameOver(this);
 		}
 	}
 	
@@ -136,25 +138,16 @@ public class GameEngine implements KeyListener, GameReporter{
 		case KeyEvent.VK_N:
 			newGame();
 			break;
-		case KeyEvent.VK_S:
-			shoot();
-			break;
 		case KeyEvent.VK_F1:
 			stepEnermy++;
 			break;
 		case KeyEvent.VK_F2:
 			stepEnermy--;
 			break;
-		case KeyEvent.VK_1:
-			difficulty += 0.05;
-			break;
-		case KeyEvent.VK_2:
-			difficulty -= 0.05;
-			break;
 		case KeyEvent.VK_P:
 			if(timer.isRunning()){
 				timer.stop();
-				JOptionPane.showMessageDialog(null, "                      Pause!!!\nArrow sign : Control the Spaceship.\nF1         : Enermy Speed Up.\nF2         : Enermy Speed Down.\nNumber  1  : Difficulity Up.\nNumber  2  : Difficulity Down.\nPress N    : New Game.\nPress P    : Continue game.", "***Pause***",JOptionPane.INFORMATION_MESSAGE );
+				JOptionPane.showMessageDialog(null, "                      Pause!!!\nArrow sign : Control the Spaceship.\nF1         : Enermy Speed Up.\nF2         : Enermy Speed Down.\nPress N    : New Game.\nPress P    : Continue game.", "***Pause***",JOptionPane.INFORMATION_MESSAGE );
 				}
 			else
 				timer.start();
@@ -178,11 +171,21 @@ public class GameEngine implements KeyListener, GameReporter{
 		return highScore;
 	}
 
+	public long getLevel(){
+		return (long)(difficulty * 10);
+	}
+
+	public double getPercent(){
+		return ((double)(score - lowwerScore)/(double)(limitLevel - lowwerScore))*100;
+	}
+
 	public void newGame(){
 		if(score > highScore)
 			highScore = score;
 		score = 0;
 		live = 5;
+		difficulty = 0.1;
+		//gp.updateGameUI(this);
 		start(name);
 	}
 

@@ -26,7 +26,7 @@ public class GamePanel extends JPanel {
 		big.setBackground(Color.BLACK);
 	}
 
-	public void clearScreen() {
+	public void newGamePanel(){
 		big.clearRect(0, 0, 400, 600);
 	}
 
@@ -40,11 +40,24 @@ public class GamePanel extends JPanel {
 		big.drawString(String.format("%08d", reporter.getScore()), 300, 20);
 		big.drawString(String.format("Highest Score :"), 204, 40);
 		big.drawString(String.format("%08d", reporter.getHighScore()), 300, 40);
+		big.drawString(String.format("Level : %d   %02.2f%%", reporter.getLevel(),reporter.getPercent()), 20, 40);
 		for(Sprite s : sprites){
 			s.draw(big);
 		}
 		
 		repaint();
+	}
+
+	public void gameOver(GameReporter reporter){
+		big.clearRect(0, 0, 400, 600);
+		
+		big.setColor(Color.WHITE);
+		big.drawString(String.format("Game Over!!!"), 170, 270);
+		big.drawString(String.format("Score :"), 160, 300);
+		big.drawString(String.format("%08d", reporter.getScore()), 220, 300);
+		big.drawString(String.format("Highest Score :"), 114, 330);
+		big.drawString(String.format("%08d", reporter.getHighScore()), 220, 330);
+		big.drawString(String.format("Level : %d   %02.2f%%", reporter.getLevel(),reporter.getPercent()), 160, 360);
 	}
 
 	//@Override
