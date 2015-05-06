@@ -17,8 +17,9 @@ import javax.swing.Timer;
 public class GameEngine implements KeyListener, GameReporter{
 	GamePanel gp;
 		
-	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();	
-	private SpaceShip v;	
+	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	private SpaceShip v1;
+	private SpaceShip v2;	
 	
 	private Timer timer;
 	
@@ -31,15 +32,17 @@ public class GameEngine implements KeyListener, GameReporter{
 	public String name;
 	public String noname = "Noname";
 	private int stepEnermy = 12;
-	private int stepShot = 25;
+	private int stepBullet = 24;
 
 
 
-		public GameEngine(GamePanel gp, SpaceShip v) {
+		public GameEngine(GamePanel gp, SpaceShip v1,SpaceShip v2) {
 		this.gp = gp;
-		this.v = v;		
+		this.v1 = v1;
+		this.v2 = v2;		
 		
-		gp.sprites.add(v);
+		gp.sprites.add(v1);
+		gp.sprites.add(v2);
 		
 		timer = new Timer(50, new ActionListener() {
 			
@@ -92,7 +95,7 @@ public class GameEngine implements KeyListener, GameReporter{
 		
 		gp.updateGameUI(this);
 		
-		Rectangle2D.Double vr = v.getRectangle();
+		Rectangle2D.Double vr = v1.getRectangle();
 		Rectangle2D.Double er;
 		for(Enemy e : enemies){
 			er = e.getRectangle();
@@ -124,19 +127,33 @@ public class GameEngine implements KeyListener, GameReporter{
 	void controlVehicle(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
-			v.move(-1);
+			v1.move(-1);
 			break;
 		case KeyEvent.VK_RIGHT:
-			v.move(1);
+			v1.move(1);
 			break;
 		case KeyEvent.VK_UP:
-			v.straight(-1);
+			v1.straight(-1);
 			break;
 		case KeyEvent.VK_DOWN:
-			v.straight(1);
+			v1.straight(1);
+			break;
+		case KeyEvent.VK_A:
+			v2.move(-1);
+			break;
+		case KeyEvent.VK_D:
+			v2.move(1);
+			break;
+		case KeyEvent.VK_W:
+			v2.straight(-1);
+			break;
+		case KeyEvent.VK_S:
+			v2.straight(1);
 			break;
 		case KeyEvent.VK_N:
-			newGame();
+			if(!timer.isRunning()){
+				newGame();
+			}
 			break;
 		case KeyEvent.VK_F1:
 			stepEnermy++;
