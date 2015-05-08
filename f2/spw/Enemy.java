@@ -25,6 +25,8 @@ public class Enemy extends Sprite{
 		}
 		g.setColor(Color.RED);
 		g.fillRect(x, y, width, height);
+		//g.fillRect(x, y, width, 10);
+
 		
 	}
 
@@ -39,4 +41,7 @@ public class Enemy extends Sprite{
 		return alive;
 	}
 
+	public boolean enermydie(){
+		return false;
+	}
 }

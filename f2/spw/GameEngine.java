@@ -23,14 +23,17 @@ public class GameEngine implements KeyListener, GameReporter{
 	
 	private Timer timer;
 	
-	private long score = 0;
+	private long score1 = 0;
+	private long score2 = 0;
 	private long highScore = 0;
 	private long lowwerScore = 0;
 	private long limitLevel = 5000; 
 	private double difficulty = 0.1;
-	public long live = 4; //multiple by 2
-	public String name;
-	public String noname = "Noname";
+	public long live1 = 100;
+	public long live2 = 100;
+	public String name1;
+	public String name2;
+	// /public String noname = "Noname";
 	private int stepEnermy = 12;
 	private int stepBullet = 24;
 
@@ -55,9 +58,10 @@ public class GameEngine implements KeyListener, GameReporter{
 		
 	}
 	
-	public void start(String name){
+	public void start(String name1, String name2){
 		timer.start();
-		this.name = name;
+		this.name1 = name1;
+		this.name2 = name2;
 	}
 	
 	private void generateEnemy(){
@@ -80,12 +84,26 @@ public class GameEngine implements KeyListener, GameReporter{
 			if(!e.isAlive()){
 				e_iter.remove();
 				gp.sprites.remove(e);
-				score += 100;
-				if(score > highScore)
-					highScore = score;
-				if(score>limitLevel){
+				if(live1>0)
+					score1 += 100;
+				if(live2>0)
+					score2 += 100;
+				if(score1 > highScore)
+					highScore = score1;
+				if(score2 > highScore)
+					highScore = score2;
+				if(score1>limitLevel){
 					difficulty += 0.1;
+					showNextStage();
 					lowwerScore = limitLevel;
+					limitLevel = (long)(limitLevel*2.5);
+
+					System.out.println(difficulty);
+				}
+				else if(score2>limitLevel){
+					difficulty += 0.1;									
+					lowwerScore = limitLevel;
+					showNextStage();
 					limitLevel = (long)(limitLevel*2.5);
 					System.out.println(difficulty);
 				}
@@ -96,59 +114,94 @@ public class GameEngine implements KeyListener, GameReporter{
 		gp.updateGameUI(this);
 		
 		Rectangle2D.Double vr = v1.getRectangle();
+		Rectangle2D.Double wr = v2.getRectangle();
 		Rectangle2D.Double er;
 		for(Enemy e : enemies){
 			er = e.getRectangle();
 			if(er.intersects(vr)){
-				die();
+				//die(e_iter,e);
+				if(live1>0)
+					live1-=2;
+				e.enermydie();
+				gp.sprites.remove(e);
+				if(live1<=0){
+					gp.sprites.remove(v1);
+				}
 				return;
 			}
+			if(er.intersects(wr)){
+				//die(e_iter,e);
+				if(live2>0)
+					live2-=2;
+				e.enermydie();
+				gp.sprites.remove(e);
+				if(live2<=0){
+					gp.sprites.remove(v2);
+				}
+				return;
+			}
+			if(live1<=0&&live2<=0)
+				die();
 		}
+	}
+
+	public void showNextStage(){
+		gp.nextStage(this);
+		try{
+			Thread.sleep(2000);
+			}catch(Exception ex){
+				System.out.println("Oh.");
+			}
+		start(name1,name2);
 	}
 	
 	public void die(){
-		if(live > 0){
-			live--;	
-			if(live%2==0){
+		//if(live > 0){
+		//	live--;	
+			/*if(live%2==0){
 				try{
 					Thread.sleep(1000);
 				}catch(Exception e){
 					System.out.println("Oh.");
 				}
 				score -= 100;
-			}	
-		}
-		else{
-		   	timer.stop();
+		
+			}	*/
+		//}
+		//else{
+			if(live1<=0&&live2<=0){
 		   	gp.gameOver(this);
+		   //	e_iter.remove();
+			//gp.sprites.remove(ene);
+		   	timer.stop();
 		}
 	}
 	
 	void controlVehicle(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
-			v1.move(-1);
-			break;
-		case KeyEvent.VK_RIGHT:
-			v1.move(1);
-			break;
-		case KeyEvent.VK_UP:
-			v1.straight(-1);
-			break;
-		case KeyEvent.VK_DOWN:
-			v1.straight(1);
-			break;
-		case KeyEvent.VK_A:
 			v2.move(-1);
 			break;
-		case KeyEvent.VK_D:
+		case KeyEvent.VK_RIGHT:
 			v2.move(1);
 			break;
-		case KeyEvent.VK_W:
+		case KeyEvent.VK_UP:
 			v2.straight(-1);
 			break;
-		case KeyEvent.VK_S:
+		case KeyEvent.VK_DOWN:
 			v2.straight(1);
+			break;
+		case KeyEvent.VK_A:
+			v1.move(-1);
+			break;
+		case KeyEvent.VK_D:
+			v1.move(1);
+			break;
+		case KeyEvent.VK_W:
+			v1.straight(-1);
+			break;
+		case KeyEvent.VK_S:
+			v1.straight(1);
 			break;
 		case KeyEvent.VK_N:
 			if(!timer.isRunning()){
@@ -172,20 +225,37 @@ public class GameEngine implements KeyListener, GameReporter{
 		}
 	}
 
-	public long getScore(){
-		return score;
+	public long getScoreP1(){
+		return score1;
 	}
 
-	public String getName(){
-		return name;
+	public long getScoreP2(){
+		return score2;
 	}
 
-	public long getLive(){
-		return live;
+	public String getNameP1(){
+		return name1;
+	}
+	public String getNameP2(){
+		return name2;
+	}
+
+	public long getLiveP1(){
+		return live1;
+	}
+	public long getLiveP2(){
+		return live2;
 	}
 
 	public long getHighScore(){
 		return highScore;
+	}
+
+	public long getMoreScore(){
+		if(score1>score2)
+			return score1;
+		else
+			return score2;
 	}
 
 	public long getLevel(){
@@ -193,17 +263,22 @@ public class GameEngine implements KeyListener, GameReporter{
 	}
 
 	public double getPercent(){
-		return ((double)(score - lowwerScore)/(double)(limitLevel - lowwerScore))*100;
+		return ((double)(getMoreScore() - lowwerScore)/(double)(limitLevel - lowwerScore))*100;
 	}
 
 	public void newGame(){
-		if(score > highScore)
-			highScore = score;
-		score = 0;
-		live = 5;
+		if(getMoreScore() > highScore)
+			highScore = getMoreScore();
+		score1 = 0;
+		score2 = 0;
+		live1 = 100;
+		live2 = 100;
 		difficulty = 0.1;
+		lowwerScore = 0;
+		limitLevel = 5000;
+
 		//gp.updateGameUI(this);
-		start(name);
+		start(name1,name2);
 	}
 
 	
